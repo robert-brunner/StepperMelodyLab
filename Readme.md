@@ -7,6 +7,7 @@ Turn any MIDI file into music played by stepper motors. Load a song, pick up to 
 ![Stepper Melody Lab interface](Screenshots/Landing.png)
 
 
+[See Sample to pull this off](https://github.com/user-attachments/assets/e5c6caaa-9108-4ada-9df3-ce44aea71a5b)
 
 ## What it does
 
