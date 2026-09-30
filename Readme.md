@@ -2,6 +2,11 @@
 
 Turn any MIDI file into music played by stepper motors. Load a song, pick up to three parts, and export a ready-to-flash ESP32 sketch that drives one A4988 per motor.
 
+## Screenshots
+
+![Stepper Melody Lab interface](Screenshots/Landing.png)
+
+
 
 ## What it does
 
@@ -13,6 +18,10 @@ Turn any MIDI file into music played by stepper motors. Load a song, pick up to 
 - **Previews** the parts through your speakers.
 - **Exports** a complete non-blocking `.cpp` sketch (or `.ino`, or a cropped MIDI). Each motor gets its own pulse schedule and all start together.
 - **3D wiring view.** An interactive ESP32 model shows every connection. Motor wires update with the 1/2/3 motor selector.
+
+
+![3D ESP32 wiring view](Screenshots/Pinout.png)
+
 
 ## Hardware
 
