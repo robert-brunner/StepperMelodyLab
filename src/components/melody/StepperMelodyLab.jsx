@@ -316,7 +316,7 @@ function downloadBlob(data, name, type) {
   setTimeout(() => URL.revokeObjectURL(url), 10000);
 }
 
-const MOTOR_COLORS_CSS = ['#c6f36d', '#53cbd6', '#ffb686'];
+const MOTOR_COLORS_CSS = ['#ffd319', '#f222ff', '#ff901f'];
 
 // ─── Pin Legend Table ─────────────────────────────────────────────────────────
 
@@ -324,8 +324,8 @@ function PinLegend({ motorCount, pins }) {
   const css = {
     wrap: { marginTop: 16 },
     table: { width: '100%', borderCollapse: 'collapse', fontSize: 13, fontFamily: 'ui-monospace, monospace' },
-    th: { textAlign: 'left', padding: '6px 10px', color: '#a7b9c7', borderBottom: '1px solid #2a3c4c', fontWeight: 600 },
-    td: { padding: '7px 10px', borderBottom: '1px solid #1a2d3c' },
+    th: { textAlign: 'left', padding: '6px 10px', color: '#c9a8e8', borderBottom: '1px solid #3d1a6e', fontWeight: 600 },
+    td: { padding: '7px 10px', borderBottom: '1px solid #2a0f4d' },
     dot: (color) => ({ display: 'inline-block', width: 9, height: 9, borderRadius: '50%', background: color, marginRight: 7, verticalAlign: 'middle' }),
   };
 
@@ -337,12 +337,12 @@ function PinLegend({ motorCount, pins }) {
       <tr key={`m${i}-step`}>
         <td style={css.td}><span style={css.dot(color)} />Motor {i + 1}</td>
         <td style={{ ...css.td, color }}>{step}</td>
-        <td style={{ ...css.td, color: '#a7b9c7' }}>STEP</td>
+        <td style={{ ...css.td, color: '#c9a8e8' }}>STEP</td>
       </tr>,
       <tr key={`m${i}-dir`}>
         <td style={css.td}><span style={css.dot(color)} /></td>
         <td style={{ ...css.td, color }}>{dir}</td>
-        <td style={{ ...css.td, color: '#a7b9c7' }}>DIR</td>
+        <td style={{ ...css.td, color: '#c9a8e8' }}>DIR</td>
       </tr>
     );
   }
@@ -374,16 +374,16 @@ function CropCanvas({ groups, sourceDuration, cropStart, cropEnd }) {
     for (const g of groups) for (const n of g.notes) { lo = Math.min(lo, n.note); hi = Math.max(hi, n.note); }
     const w = c.width, h = c.height, span = Math.max(1, hi - lo);
     for (let i = 0; i < groups.length; i++) {
-      ctx.fillStyle = i === 0 ? '#587637' : '#29465a';
+      ctx.fillStyle = i === 0 ? '#ff2975' : '#5a2a9e';
       for (const n of groups[i].notes) ctx.fillRect(n.start / sourceDuration * w, 8 + (hi - n.note) / span * (h - 16), Math.max(1, (n.end - n.start) / sourceDuration * w), 2);
     }
     if (!Number.isFinite(cropStart) || !Number.isFinite(cropEnd)) return;
     const a = Math.max(0, Math.min(w, cropStart / sourceDuration * w));
     const bx = Math.max(0, Math.min(w, cropEnd / sourceDuration * w));
-    ctx.fillStyle = '#000b'; ctx.fillRect(0, 0, a, h); ctx.fillRect(bx, 0, w - bx, h);
-    ctx.strokeStyle = '#c6f36d'; ctx.lineWidth = 3; ctx.strokeRect(a, 2, Math.max(0, bx - a), h - 4);
+    ctx.fillStyle = '#0d0221cc'; ctx.fillRect(0, 0, a, h); ctx.fillRect(bx, 0, w - bx, h);
+    ctx.strokeStyle = '#ffd319'; ctx.lineWidth = 3; ctx.strokeRect(a, 2, Math.max(0, bx - a), h - 4);
   }, [groups, sourceDuration, cropStart, cropEnd]);
-  return <canvas ref={ref} width={1100} height={100} style={{ width: '100%', height: 100, background: '#091520', borderRadius: 8 }} />;
+  return <canvas ref={ref} width={1100} height={100} style={{ width: '100%', height: 100, background: '#12052a', borderRadius: 8 }} />;
 }
 
 function RollCanvas({ result }) {
@@ -399,18 +399,18 @@ function RollCanvas({ result }) {
     ctx.font = '13px monospace';
     for (let n = lo; n <= hi; n++) {
       const y = H - (n - lo) / (hi - lo) * H;
-      ctx.strokeStyle = n % 12 === 0 ? '#36576a' : '#182d3c'; ctx.beginPath(); ctx.moveTo(48, y); ctx.lineTo(c.width, y); ctx.stroke();
-      if (n >= 0 && n % 12 === 0) { ctx.fillStyle = '#aac1d0'; ctx.fillText(noteName(n), 2, y + 4); }
+      ctx.strokeStyle = n % 12 === 0 ? '#5a2a9e' : '#2a0f4d'; ctx.beginPath(); ctx.moveTo(48, y); ctx.lineTo(c.width, y); ctx.stroke();
+      if (n >= 0 && n % 12 === 0) { ctx.fillStyle = '#c9a8e8'; ctx.fillText(noteName(n), 2, y + 4); }
     }
     for (const n of result.notes) {
       ctx.fillStyle = MOTOR_COLORS_CSS[n.motor];
       const y = H - (n.note - lo) / (hi - lo) * H;
       ctx.fillRect(50 + n.start / result.duration * W, y - 3 + n.motor, Math.max(1, (n.end - n.start) / result.duration * W), 5);
     }
-    ctx.fillStyle = '#aac1d0';
+    ctx.fillStyle = '#c9a8e8';
     for (let i = 0; i <= 4; i++) ctx.fillText((result.duration * i / 4000).toFixed(1) + 's', 50 + i * W / 4 - (i === 4 ? 45 : 0), c.height - 6);
   }, [result]);
-  return <canvas ref={ref} width={1100} height={250} style={{ width: '100%', height: 250, background: '#091520', borderRadius: 8 }} />;
+  return <canvas ref={ref} width={1100} height={250} style={{ width: '100%', height: 250, background: '#12052a', borderRadius: 8 }} />;
 }
 
 // ─── Main App ─────────────────────────────────────────────────────────────────
@@ -445,6 +445,28 @@ export default function StepperMelodyLab() {
   const sourcesRef = useRef([]);
   const previewTimerRef = useRef(null);
   const previewRevRef = useRef(0);
+    // Sidebar follows scroll: sticks at its bottom going down, at its top going up
+  const asideRef = useRef(null);
+  useEffect(() => {
+    const el = asideRef.current; if (!el) return;
+    const GAP = 16;
+    let top = GAP, lastY = window.scrollY;
+    const apply = () => {
+      const min = Math.min(GAP, window.innerHeight - el.offsetHeight - GAP);
+      const dy = window.scrollY - lastY; lastY = window.scrollY;
+      top = Math.max(min, Math.min(GAP, top - dy));
+      el.style.top = top + 'px';
+    };
+    apply();
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply);
+    const ro = new ResizeObserver(apply); ro.observe(el);
+    return () => {
+      window.removeEventListener('scroll', apply);
+      window.removeEventListener('resize', apply);
+      ro.disconnect();
+    };
+  }, []);
 
   const opts = { low: 43, high: 62, transpose, fold: true, method, speed, cropStart: Math.round(cropStart), cropEnd: Math.round(cropEnd) };
 
@@ -575,43 +597,46 @@ export default function StepperMelodyLab() {
   }
 
   // ── Styles ──────────────────────────────────────────────────────────────────
+  const PIXEL = "'Press Start 2P', monospace";
+  const RETRO = "'VT323', monospace";
   const S = {
-    root:        { background: '#09121b', color: '#ecf3f8', minHeight: '100vh', fontFamily: 'system-ui, sans-serif', fontSize: 16, lineHeight: 1.55 },
-    header:      { borderBottom: '1px solid #2a3c4c', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 5%', gap: 20, flexWrap: 'wrap' },
-    brand:       { fontWeight: 800, letterSpacing: '0.1em', color: '#c6f36d', fontSize: 15 },
-    mono:        { fontFamily: 'ui-monospace, monospace', fontSize: 13, color: '#a7b9c7' },
+    root:        { color: '#f6e9ff', minHeight: '100vh', fontFamily: RETRO, fontSize: 20, lineHeight: 1.3 },
+    header:      { borderBottom: '2px solid #f222ff', boxShadow: '0 2px 18px rgba(242,34,255,0.45)', background: 'rgba(13,2,33,0.85)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 5%', gap: 20, flexWrap: 'wrap' },
+    brand:       { fontFamily: PIXEL, fontSize: 13, letterSpacing: '0.08em', color: '#ffd319', textShadow: '0 0 8px #ff901f, 0 0 16px #ff2975' },
+    mono:        { fontFamily: RETRO, fontSize: 18, color: '#c9a8e8', letterSpacing: '0.06em' },
     main:        { maxWidth: 1440, margin: 'auto', padding: '32px 5%' },
     intro:       { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, marginBottom: 30, flexWrap: 'wrap' },
-    h1:          { fontSize: 'clamp(26px,3vw,40px)', lineHeight: 1.15, letterSpacing: '-0.04em', margin: '10px 0' },
-    eyebrow:     { fontFamily: 'ui-monospace, monospace', fontSize: 13, color: '#53cbd6', letterSpacing: '0.16em', margin: 0 },
+    h1:          { fontFamily: PIXEL, fontSize: 'clamp(20px,2.6vw,34px)', lineHeight: 1.35, margin: '14px 0', background: 'linear-gradient(180deg,#ffd319 0%,#ff901f 40%,#ff2975 70%,#f222ff 100%)', WebkitBackgroundClip: 'text', backgroundClip: 'text', color: 'transparent', filter: 'drop-shadow(0 0 10px rgba(255,41,117,0.55))' },
+    eyebrow:     { fontFamily: RETRO, fontSize: 18, color: '#f222ff', letterSpacing: '0.2em', margin: 0 },
     layout:      { display: 'grid', gridTemplateColumns: '320px minmax(0,1fr)', gap: 24 },
-    panel:       { padding: 24, background: '#111f2c', border: '1px solid #2a3c4c', borderRadius: 12, marginBottom: 20 },
+    aside:       { position: 'sticky', top: 16, alignSelf: 'start' },
+    panel:       { padding: 24, background: 'rgba(26,8,51,0.88)', border: '2px solid #8c1eff', borderRadius: 4, marginBottom: 20, boxShadow: '0 0 18px rgba(140,30,255,0.35), inset 0 0 24px rgba(242,34,255,0.08)' },
     shead:       { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20, flexWrap: 'wrap' },
-    h2:          { fontSize: 17, margin: 0, fontWeight: 700 },
-    label:       { display: 'block', margin: '16px 0 7px', fontSize: 14, fontWeight: 600 },
-    sel:         { width: '100%', background: '#091520', color: '#ecf3f8', border: '1px solid #405362', borderRadius: 7, padding: '9px 10px', fontSize: 15 },
-    num:         { width: '100%', background: '#091520', color: '#ecf3f8', border: '1px solid #405362', borderRadius: 7, padding: 9, fontSize: 15, boxSizing: 'border-box' },
-    btn:         { background: '#c6f36d', color: '#132000', border: 'none', padding: '10px 16px', borderRadius: 7, fontSize: 14, fontWeight: 700, cursor: 'pointer' },
-    btnSec:      { background: 'transparent', color: '#ecf3f8', border: '1px solid #456070', padding: '10px 16px', borderRadius: 7, fontSize: 14, fontWeight: 700, cursor: 'pointer' },
-    sm:          { padding: '7px 13px', fontSize: 13, marginTop: 12 },
-    muted:       { fontSize: 14, color: '#a7b9c7', margin: '8px 0' },
-    help:        { fontSize: 13, color: '#a7b9c7', margin: '6px 0' },
+    h2:          { fontFamily: PIXEL, fontSize: 12, margin: 0, color: '#ffd319', letterSpacing: '0.06em', textShadow: '0 0 8px rgba(255,144,31,0.7)' },
+    label:       { display: 'block', margin: '16px 0 6px', fontSize: 19, color: '#ff901f', letterSpacing: '0.04em' },
+    sel:         { width: '100%', background: '#12052a', color: '#f6e9ff', border: '2px solid #5a2a9e', borderRadius: 2, padding: '6px 10px', fontSize: 19, fontFamily: RETRO },
+    num:         { width: '100%', background: '#12052a', color: '#f6e9ff', border: '2px solid #5a2a9e', borderRadius: 2, padding: '6px 10px', fontSize: 19, fontFamily: RETRO, boxSizing: 'border-box' },
+    btn:         { fontFamily: PIXEL, background: 'linear-gradient(90deg,#ff2975,#f222ff)', color: '#ffffff', border: 'none', padding: '12px 16px', borderRadius: 2, fontSize: 10, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '4px 4px 0 #8c1eff, 0 0 14px rgba(242,34,255,0.6)' },
+    btnSec:      { fontFamily: PIXEL, background: 'transparent', color: '#ffd319', border: '2px solid #ff901f', padding: '10px 14px', borderRadius: 2, fontSize: 10, letterSpacing: '0.06em', cursor: 'pointer', boxShadow: '3px 3px 0 #ff2975' },
+    sm:          { padding: '8px 12px', fontSize: 9, marginTop: 12 },
+    muted:       { fontSize: 18, color: '#c9a8e8', margin: '8px 0' },
+    help:        { fontSize: 17, color: '#c9a8e8', margin: '6px 0' },
     two:         { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 },
-    motorCard:   { borderTop: '1px solid #2a3c4c', marginTop: 16, paddingTop: 4 },
-    stats:       { display: 'flex', gap: 32, borderBottom: '1px solid #2a3c4c', paddingBottom: 20, marginBottom: 16, flexWrap: 'wrap' },
-    statVal:     { display: 'block', fontSize: 26, letterSpacing: '-0.03em', color: '#c6f36d', fontWeight: 700 },
-    statLbl:     { fontSize: 13, color: '#a7b9c7' },
-    badge:       { fontFamily: 'ui-monospace, monospace', fontSize: 12, border: '1px solid #2a3c4c', padding: '4px 8px', borderRadius: 5, color: '#53cbd6', marginLeft: 'auto' },
-    amber:       { color: '#ffd481' },
-    err:         { color: '#ffb5ac', fontSize: 14, margin: '6px 0' },
+    motorCard:   { borderTop: '2px dashed #3d1a6e', marginTop: 16, paddingTop: 4 },
+    stats:       { display: 'flex', gap: 32, borderBottom: '2px solid #3d1a6e', paddingBottom: 20, marginBottom: 16, flexWrap: 'wrap' },
+    statVal:     { display: 'block', fontFamily: PIXEL, fontSize: 20, color: '#ffd319', textShadow: '0 0 10px #ff901f', marginBottom: 6 },
+    statLbl:     { fontSize: 17, color: '#c9a8e8' },
+    badge:       { fontFamily: PIXEL, fontSize: 9, border: '2px solid #f222ff', padding: '6px 8px', borderRadius: 2, color: '#f222ff', marginLeft: 'auto', boxShadow: '0 0 10px rgba(242,34,255,0.5)' },
+    amber:       { color: '#ff901f' },
+    err:         { color: '#ff2975', fontSize: 18, margin: '6px 0' },
     transport:   { display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap', margin: '16px 0' },
-    exports:     { display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 16, borderTop: '1px solid #2a3c4c', marginTop: 4 },
-    textarea:    { width: '100%', height: 280, background: '#08121b', color: '#c6dbe6', border: '1px solid #2a3c4c', padding: 14, fontFamily: 'ui-monospace, monospace', fontSize: 13, lineHeight: 1.6, resize: 'vertical', borderRadius: 7, boxSizing: 'border-box' },
-    inlineCode:  { fontFamily: 'ui-monospace, monospace', fontSize: 13, background: '#07131c', color: '#c6f36d', padding: '2px 5px', borderRadius: 4 },
-    footer:      { padding: '20px 5%', borderTop: '1px solid #2a3c4c', color: '#a7b9c7', fontSize: 13 },
-    monoNum:     { fontFamily: 'ui-monospace, monospace', fontSize: 14, color: '#53cbd6' },
-    legend:      { display: 'flex', gap: 16, fontSize: 13, color: '#a7b9c7', margin: '6px 0' },
-    ol:          { paddingLeft: 22, color: '#a7b9c7' },
+    exports:     { display: 'flex', gap: 10, flexWrap: 'wrap', paddingTop: 16, borderTop: '2px solid #3d1a6e', marginTop: 4 },
+    textarea:    { width: '100%', height: 280, background: '#0d0221', color: '#f6e9ff', border: '2px solid #3d1a6e', padding: 14, fontFamily: 'ui-monospace, monospace', fontSize: 13, lineHeight: 1.6, resize: 'vertical', borderRadius: 2, boxSizing: 'border-box' },
+    inlineCode:  { fontFamily: 'ui-monospace, monospace', fontSize: 13, background: '#12052a', color: '#ffd319', padding: '2px 5px', borderRadius: 2 },
+    footer:      { padding: '20px 5%', borderTop: '2px solid #3d1a6e', color: '#c9a8e8', fontSize: 17 },
+    monoNum:     { fontFamily: PIXEL, fontSize: 11, color: '#f222ff', textShadow: '0 0 8px #f222ff' },
+    legend:      { display: 'flex', gap: 16, fontSize: 17, color: '#c9a8e8', margin: '6px 0' },
+    ol:          { paddingLeft: 22, color: '#c9a8e8' },
     li:          { margin: '10px 0' },
   };
 
@@ -632,7 +657,7 @@ export default function StepperMelodyLab() {
       <main style={S.main}>
         <div style={S.intro}>
           <div>
-            <p style={{ ...S.mono, color: '#53cbd6', letterSpacing: '0.16em', margin: 0 }}>ONE SONG. UP TO THREE PARTS.</p>
+            <p style={{ ...S.mono, color: '#f222ff', letterSpacing: '0.16em', margin: 0 }}>ONE SONG. UP TO THREE PARTS.</p>
             <h1 style={S.h1}>Make your stepper sing.</h1>
             <p style={{ ...S.muted, margin: '10px 0 0' }}>Load a MIDI, crop the section you want, assign a part per motor.</p>
           </div>
@@ -641,12 +666,12 @@ export default function StepperMelodyLab() {
 
         <div style={S.layout}>
           {/* ── Left sidebar ── */}
-          <aside>
+                              <aside style={S.aside} ref={asideRef}>
             {/* 01 Source */}
             <section style={S.panel}>
               <div style={S.shead}><span style={S.monoNum}>01</span><h2 style={S.h2}>Source</h2></div>
               <label
-                style={{ padding: '20px 14px', textAlign: 'center', border: '1px dashed #55727f', borderRadius: 8, background: '#0b1923', cursor: 'pointer', display: 'block' }}
+                style={{ padding: '20px 14px', textAlign: 'center', border: '1px dashed #f222ff', borderRadius: 8, background: '#12052a', cursor: 'pointer', display: 'block' }}
                 onDragOver={e => e.preventDefault()}
                 onDrop={e => { e.preventDefault(); handleFile(e.dataTransfer.files[0]); }}
               >
@@ -704,7 +729,7 @@ export default function StepperMelodyLab() {
                 ))}
               </select>
               <div style={{ display: 'flex', gap: 9, alignItems: 'flex-start', marginTop: 14, fontSize: 14 }}>
-                <input type="checkbox" checked disabled style={{ accentColor: '#c6f36d', marginTop: 4 }} />
+                <input type="checkbox" checked disabled style={{ accentColor: '#ffd319', marginTop: 4 }} />
                 <label>Octave-shift out-of-range notes (always on)</label>
               </div>
               <button style={{ ...S.btnSec, ...S.sm }} onClick={() => setTranspose(-14)}>Restore preset</button>
@@ -729,14 +754,14 @@ export default function StepperMelodyLab() {
                   <label style={S.label}>Start (s)</label>
                   <input type="number" min={0} max={sourceDuration / 1000} step={0.001} style={S.num}
                     value={(cropStart / 1000).toFixed(3)} onChange={e => setCropStart(Math.min(+e.target.value * 1000, cropEnd - 1))} />
-                  <input type="range" min={0} max={sourceDuration / 1000} step={0.001} style={{ width: '100%', accentColor: '#c6f36d', marginTop: 10 }}
+                  <input type="range" min={0} max={sourceDuration / 1000} step={0.001} style={{ width: '100%', accentColor: '#ffd319', marginTop: 10 }}
                     value={cropStart / 1000} onChange={e => setCropStart(Math.min(+e.target.value * 1000, cropEnd - 1))} />
                 </div>
                 <div>
                   <label style={S.label}>End (s)</label>
                   <input type="number" min={0} max={sourceDuration / 1000} step={0.001} style={S.num}
                     value={(cropEnd / 1000).toFixed(3)} onChange={e => setCropEnd(Math.max(+e.target.value * 1000, cropStart + 1))} />
-                  <input type="range" min={0} max={sourceDuration / 1000} step={0.001} style={{ width: '100%', accentColor: '#c6f36d', marginTop: 10 }}
+                  <input type="range" min={0} max={sourceDuration / 1000} step={0.001} style={{ width: '100%', accentColor: '#ffd319', marginTop: 10 }}
                     value={cropEnd / 1000} onChange={e => setCropEnd(Math.max(+e.target.value * 1000, cropStart + 1))} />
                 </div>
               </div>
@@ -773,7 +798,7 @@ export default function StepperMelodyLab() {
                 <button style={S.btnSec} disabled={!result} onClick={() => result && downloadBlob(makeCode(), 'StepperSong.ino', 'text/plain')}>Download .ino</button>
               </div>
               <details style={{ margin: '16px 0' }} open={codeVisible} onToggle={e => setCodeVisible(e.target.open)}>
-                <summary style={{ cursor: 'pointer', color: '#53cbd6', fontSize: 14 }}>View / copy C++ sketch</summary>
+                <summary style={{ cursor: 'pointer', color: '#f222ff', fontSize: 14 }}>View / copy C++ sketch</summary>
                 <button style={{ ...S.btnSec, ...S.sm }} onClick={copyCode}>{copyLabel}</button>
                 <textarea id="code-ta" readOnly style={S.textarea} value={makeCode()} spellCheck={false} />
               </details>
@@ -786,7 +811,7 @@ export default function StepperMelodyLab() {
                 <h2 style={S.h2}>Pin assignment — ESP32 WROOM-32</h2>
                 <span style={S.badge}>LIVE PINOUT</span>
               </div>
-              <p style={S.help}> Left-Drag = Rotate &nbsp;&nbsp;|&nbsp;&nbsp; Middle-Drag=  Pan &nbsp;&nbsp;|&nbsp;&nbsp; Scroll = Zoom</p>
+              <p style={S.help}>Left-Drag = Rotate  |  Middle-Drag= Pan  |  Scroll = Zoom</p>
               <div style={{ position: 'relative', width: '100%', height: 480, borderRadius: 10, overflow: 'hidden' }}>
                 <Esp32Viewer motorCount={motorCount} pins={pins} />
               </div>
@@ -815,7 +840,7 @@ export default function StepperMelodyLab() {
         </div>
       </main>
 
-      <footer style={S.footer}>Local MIDI processing · no upload · ESP32 WROOM-32</footer>
+      <footer style={S.footer}>Local MIDI processing · no upload · ESP32 WROOM-32 · Created by Robert Brunner  · 2026</footer>
     </div>
   );
 }
